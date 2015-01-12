@@ -1,0 +1,75 @@
+<!doctype html>
+<html>
+<head>
+    <title>Moxtra Demo Web Application</title>
+    <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <style>
+        body        { padding-top:80px; word-wrap:break-word; }
+    </style>
+</head>
+
+<body ng-app="firstMoxtraDemo">
+
+<div ng-controller="MainCtrl">
+    <div class="text-center">
+        <h1><span class="fa fa-user"></span> Course Page</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <ui-view></ui-view>
+
+    <script type="text/ng-template" id="/home.html">
+        <tabs class="container">
+            <pane title="All Courses">
+                <div class="container">
+                    <form ng-submit="addCourse()">
+                        <h4>Submit a New Course</h4>
+                        <fieldset class="form-group">
+                            <textarea class="form-control" placeholder="Enter the name of the course." ng-model="title" title="Course Title"></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <textarea class="form-control" placeholder="Enter the course description." ng-model="description" title="Course Description"></textarea>
+                        </fieldset>
+                        <fieldset class="form-group">
+                            <textarea class="form-control" placeholder="Enter the name of the professor of this course." ng-model="professor" title="Professor"></textarea>
+                        </fieldset>
+                        <button type="submit" class="btn btn-primary">Submit Course</button>
+                    </form>
+                </div>
+
+                <div class="container">
+                    <h4>Course List</h4>
+                    <ul>
+                        <li ng-repeat="course in courses | orderBy: '-enrolled'">
+                            <blockquote>
+                                <strong>Course Title: </strong>{{course.title}}<br>
+                                <strong>Course Description: </strong>{{course.description}}<br>
+                                <strong>Professor: </strong>{{course.professor}}<br>
+                                <strong>Enrolled: </strong>{{course.enrolled}}
+                            </blockquote>
+                            <fieldset class="form-group">
+                                <button ng-click="incrementEnrolled(course)">Enroll</button>
+                            </fieldset>
+                        </li>
+                    </ul>
+                </div>
+            </pane>
+
+            <pane title="Your Courses">
+                <div class="container">
+                    <h4>Your Enrolled Courses</h4>
+                </div>
+            </pane>
+        </tabs>
+    </script>
+
+</div>
+
+    <script src="/lib/angular/angular.min.js"></script>
+    <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+
+</body>
+
+</html>

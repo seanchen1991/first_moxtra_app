@@ -1,0 +1,17 @@
+{
+  "name": "demo-moxtra-app",
+  "version": "0.0.0",
+  "authors": ["Sean Chen"],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib"
+  ],
+  "dependencies": {
+    "bootstrap": "latest",
+    "font-awesome": "latest",
+    "angular": "latest",
+    "angular-ui-router": "latest"
+  }
+}
