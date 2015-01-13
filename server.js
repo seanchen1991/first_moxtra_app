@@ -14,15 +14,15 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
-var configDB = require('./config/database');
+var configDB = require('./server/config/database');
 
 mongoose.connect(configDB.url);
-require('./models/Course');
-require('./models/Student');
-require('./config/passport')(passport);
+require('./server/models/Course');
+require('./server/models/Student');
+require('./server/config/passport')(passport);
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
+var routes = require('./server/routes/index');
+var users = require('./server/routes/users');
 
 var app = express();
 
@@ -43,7 +43,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-require('./routes/routes.js')(app, passport);
+require('./server/routes/routes.js')(app, passport);
 
 app.use('/', routes);
 app.use('/users', users);
