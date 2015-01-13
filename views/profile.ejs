@@ -4,24 +4,30 @@
     <title>Moxtra Demo Web Application</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <script src="lib/jquery/dist/jquery.min.js"></script>
     <style>
         body        { padding-top:80px; word-wrap:break-word; }
     </style>
 </head>
 
-<body ng-app="firstMoxtraDemo">
+<body ng-app="firstMoxtraDemo" ng-controller="MainCtrl">
 
-<div ng-controller="MainCtrl">
+<div id="content">
     <div class="text-center">
         <h1><span class="fa fa-user"></span> Course Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    <ui-view></ui-view>
+    <ui-view class="container"></ui-view>
 
     <script type="text/ng-template" id="/home.html">
-        <tabs class="container">
-            <pane title="All Courses">
+        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
+            <li class="active"><a href="#allcourses" data-toggle="tab">All Courses</a></li>
+            <li><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
+        </ul>
+
+        <div id="my-tab-content" class="tab-content">
+            <div class="tab-pane active" id="allcourses">
                 <div class="container">
                     <form ng-submit="addCourse()">
                         <h4>Submit a New Course</h4>
@@ -54,24 +60,29 @@
                         </li>
                     </ul>
                 </div>
-            </pane>
+            </div>  
 
-            <pane title="Your Courses">
+            <div class="tab-pane" id="yourcourses">
                 <div class="container">
                     <h4>Your Enrolled Courses</h4>
                 </div>
-            </pane>
-        </tabs>
+            </div>
+        </div>
     </script>
 
 </div>
 
     <script src="/lib/angular/angular.min.js"></script>
     <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/bootstrap/js/tab.js"></script>
     <script src="/javascripts/app.js"></script>
     <script src="/javascripts/controllers/main.js"></script>
     <script src="/javascripts/services/courses.js"></script>
-    <script src="/javascripts/directives/tabs.js"></script>
+    <script>
+        jQuery(document).ready(function($) {
+            $('#tabs').tab();
+        });
+    </script>
 
 </body>
 
