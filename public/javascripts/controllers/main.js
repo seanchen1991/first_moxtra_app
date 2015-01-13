@@ -17,7 +17,3 @@ app.controller('MainCtrl', ['$scope', 'courses', function($scope, courses) {
     courses.enroll(course);
   };
 }])
-
-// app.controller('CourseCtrl', ['$scope', 'courses', 'course', function($scope, courses, course) {
-//   $scope.course = course;
-// }])

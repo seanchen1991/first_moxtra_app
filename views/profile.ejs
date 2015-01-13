@@ -54,17 +54,25 @@
                                 <strong>Professor: </strong>{{course.professor}}<br>
                                 <strong>Enrolled: </strong>{{course.enrolled}}
                             </blockquote>
-                            <fieldset class="form-group">
-                                <button ng-click="incrementEnrolled(course)">Enroll</button>
-                            </fieldset>
+                            <button class="form-group" ng-click="incrementEnrolled(course)">Enroll</button>
                         </li>
                     </ul>
                 </div>
             </div>  
 
-            <div class="tab-pane" id="yourcourses">
+            <div class="tab-pane" id="yourcourses" ng-controller="UserCtrl">
                 <div class="container">
                     <h4>Your Enrolled Courses</h4>
+                    <ul>
+                        <li ng-repeat="course in userCourses">
+                            <blockquote>
+                                <strong>Course Title: </strong>{{course.title}}<br>
+                                <strong>Course Description: </strong>{{course.description}}<br>
+                                <strong>Professor: </strong>{{course.professor}}
+                            </blockquote>
+                            <button class="form-group" ng-click="join(course)">Join Course</button>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -72,12 +80,14 @@
 
 </div>
 
-    <script src="/lib/angular/angular.min.js"></script>
-    <script src="/lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/angular/angular.min.js"></script>
+    <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
     <script src="lib/bootstrap/js/tab.js"></script>
-    <script src="/javascripts/app.js"></script>
-    <script src="/javascripts/controllers/main.js"></script>
-    <script src="/javascripts/services/courses.js"></script>
+    <script src="javascripts/app.js"></script>
+    <script src="javascripts/controllers/main.js"></script>
+    <script src="javascripts/controllers/user.js"></script>
+    <script src="javascripts/services/courses.js"></script>
+    <script src="javascripts/services/userCourses.js"></script>
     <script>
         jQuery(document).ready(function($) {
             $('#tabs').tab();
