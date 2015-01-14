@@ -17,7 +17,7 @@ app.factory('courses', ['$http', function($http) {
       angular.copy(data, o.courses);
     });
   };
-  o.enroll = function(course) {
+  o.incrementEnrolled = function(course) {
     return $http.put('/courses/' + course._id + '/enroll')
       .success(function(data) {
         course.enrolled++;

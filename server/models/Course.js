@@ -8,7 +8,7 @@ var CourseSchema = new mongoose.Schema({
   students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }]
 });
 
-CourseSchema.methods.enroll = function(cb) {
+CourseSchema.methods.incrementEnrolled = function(cb) {
   this.enrolled++;
   this.save(cb);
 };

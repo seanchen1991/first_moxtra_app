@@ -12,7 +12,7 @@ studentSchema.methods.generateHash = function(password) {
 };
 
 studentSchema.methods.validPassword = function(password) {
-  return bcrypt.compareSync(password, this.local.password);
+  return bcrypt.compareSync(password, this.password);
 };
 
 studentSchema.methods.enroll = function(course) {

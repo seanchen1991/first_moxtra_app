@@ -57,7 +57,7 @@ router.get('/courses/:course', function(req, res) {
 });
 
 router.put('/courses/:course/enroll', function(req, res, next) {
-  req.course.enroll(function(err, course) {
+  req.course.incrementEnrolled(function(err, course) {
     if (err)
       return next(err);
     res.json(course);
@@ -98,6 +98,10 @@ router.post('/students/:username/courses', function(req, res, next) {
       res.json(course);
     });
   });
+});
+
+router.get('/login/data', function(req, res) {
+  res.json(req.user);
 });
 
 module.exports = router;

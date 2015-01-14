@@ -1,4 +1,9 @@
-app.controller('MainCtrl', ['$scope', 'courses', function($scope, courses) {
+app.controller('MainCtrl', ['$scope', '$http', 'courses', function($scope, $http, courses) {
+  
+  $http.get('/login/data').success(function(data) {
+    $scope.user = data;
+  })
+
   $scope.courses = courses.courses;
 
   $scope.addCourse = function() {
@@ -14,6 +19,6 @@ app.controller('MainCtrl', ['$scope', 'courses', function($scope, courses) {
   };
 
   $scope.enroll = function(course) {
-    courses.enroll(course);
+    courses.incrementEnrolled(course);
   };
 }])

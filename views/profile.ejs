@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html ng-app="firstMoxtraDemo">
 <head>
     <title>Moxtra Demo Web Application</title>
     <link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.min.css">
@@ -10,11 +10,12 @@
     </style>
 </head>
 
-<body ng-app="firstMoxtraDemo" ng-controller="MainCtrl">
+<body ng-controller="MainCtrl">
 
 <div id="content">
     <div class="text-center">
         <h1><span class="fa fa-user"></span> Course Page</h1>
+        <strong>User</strong> {{ user }}
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
@@ -91,7 +92,7 @@
     <script src="lib/bootstrap/js/tab.js"></script>
     <script src="javascripts/app.js"></script>
     <script src="javascripts/controllers/main.js"></script>
-    <script src="javascripts/controllers/user.js"></script>
+    <!-- <script src="javascripts/controllers/user.js"></script> -->
     <script src="javascripts/services/courses.js"></script>
     <script>
         jQuery(document).ready(function($) {
