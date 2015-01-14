@@ -13,21 +13,21 @@ module.exports = function(passport) {
   });
 
   passport.use('local-signup', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
   },
-  function(req, email, password, done) {
+  function(req, username, password, done) {
     process.nextTick(function() {
-      Student.findOne({ 'local.email' : email }, function(err, student) {
+      Student.findOne({ 'username' : username }, function(err, student) {
         if (err)
           return done(err);
         if (student) {
-          return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+          return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
         } else {
           var newStudent = new Student();
-          newStudent.local.email = email;
-          newStudent.local.password = newStudent.generateHash(password);
+          newStudent.username = username;
+          newStudent.password = newStudent.generateHash(password);
           newStudent.save(function(err) {
             if (err)
               throw err;
@@ -39,12 +39,12 @@ module.exports = function(passport) {
   }));
 
   passport.use('local-login', new LocalStrategy({
-    usernameField: 'email',
+    usernameField: 'username',
     passwordField: 'password',
     passReqToCallback: true
   },
-  function(req, email, password, done) {
-    Student.findOne({ 'local.email': email }, function(err, student) {
+  function(req, username, password, done) {
+    Student.findOne({ 'username': username }, function(err, student) {
       if (err)
         return done(err);
       if (!student)

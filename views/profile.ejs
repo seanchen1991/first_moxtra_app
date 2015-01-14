@@ -23,9 +23,8 @@
     <script type="text/ng-template" id="/home.html">
         <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
             <li class="active"><a href="#allcourses" data-toggle="tab">All Courses</a></li>
-            <li><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
+            <li><a href="#/user" data-toggle="tab">Your Courses</a></li>
         </ul>
-
         <div id="my-tab-content" class="tab-content">
             <div class="tab-pane active" id="allcourses">
                 <div class="container">
@@ -54,26 +53,33 @@
                                 <strong>Professor: </strong>{{course.professor}}<br>
                                 <strong>Enrolled: </strong>{{course.enrolled}}
                             </blockquote>
-                            <button class="form-group" ng-click="incrementEnrolled(course)">Enroll</button>
+                            <button class="form-group" ng-click="enroll(course)">Enroll</button>
                         </li>
                     </ul>
                 </div>
-            </div>  
+            </div> 
+        </div> 
+    </script>
 
-            <div class="tab-pane" id="yourcourses" ng-controller="UserCtrl">
-                <div class="container">
-                    <h4>Your Enrolled Courses</h4>
-                    <ul>
-                        <li ng-repeat="course in userCourses">
-                            <blockquote>
-                                <strong>Course Title: </strong>{{course.title}}<br>
-                                <strong>Course Description: </strong>{{course.description}}<br>
-                                <strong>Professor: </strong>{{course.professor}}
-                            </blockquote>
-                            <button class="form-group" ng-click="join(course)">Join Course</button>
-                        </li>
-                    </ul>
-                </div>
+    <script type="text/ng-template" id="/user.html">
+        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
+            <li><a href="#/home" data-toggle="tab">All Courses</a></li>
+            <li class="active"><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
+        </ul>
+
+        <div class="tab-pane active" id="yourcourses" ng-controller="UserCtrl">
+            <div class="container">
+                <h4>Your Enrolled Courses</h4>
+                <ul>
+                    <li ng-repeat="course in userCourses">
+                        <blockquote>
+                            <strong>Course Title: </strong>{{course.title}}<br>
+                            <strong>Course Description: </strong>{{course.description}}<br>
+                            <strong>Professor: </strong>{{course.professor}}
+                        </blockquote>
+                        <button class="form-group" ng-click="join(course)">Join Course</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </script>
@@ -87,7 +93,6 @@
     <script src="javascripts/controllers/main.js"></script>
     <script src="javascripts/controllers/user.js"></script>
     <script src="javascripts/services/courses.js"></script>
-    <script src="javascripts/services/userCourses.js"></script>
     <script>
         jQuery(document).ready(function($) {
             $('#tabs').tab();

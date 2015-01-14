@@ -5,6 +5,7 @@ var CourseSchema = new mongoose.Schema({
   description: String,
   professor: String,
   enrolled: { type: Number, default: 0 },
+  students: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Student' }]
 });
 
 CourseSchema.methods.enroll = function(cb) {

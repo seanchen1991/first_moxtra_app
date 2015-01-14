@@ -1,4 +1,4 @@
-app.factory('courses', ['$http', 'userCourses', function($http, userCourses) {
+app.factory('courses', ['$http', function($http) {
   var o = {
     courses: []
   };
@@ -20,7 +20,6 @@ app.factory('courses', ['$http', 'userCourses', function($http, userCourses) {
   o.enroll = function(course) {
     return $http.put('/courses/' + course._id + '/enroll')
       .success(function(data) {
-        userCourses.courses.push(course);
         course.enrolled++;
       });
   };

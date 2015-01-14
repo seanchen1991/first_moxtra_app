@@ -13,7 +13,7 @@ app.controller('MainCtrl', ['$scope', 'courses', function($scope, courses) {
     $scope.professor = '';
   };
 
-  $scope.incrementEnrolled = function(course) {
+  $scope.enroll = function(course) {
     courses.enroll(course);
   };
 }])
