@@ -15,9 +15,4 @@ studentSchema.methods.validPassword = function(password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-studentSchema.methods.enroll = function(course) {
-  this.courses.push(course);
-  this.save(course);
-};
-
 module.exports = mongoose.model('Student', studentSchema);
