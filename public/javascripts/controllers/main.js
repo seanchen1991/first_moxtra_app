@@ -1,10 +1,4 @@
-app.controller('MainCtrl', ['$scope', '$http', 'courses', 'students', function($scope, $http, courses, students) {
-  
-  $http.get('/login/data').success(function(data) {
-    $scope.user = data;
-  })
-
-  students.student = $scope.user;
+app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, courses, students) {
   $scope.courses = courses.courses;
 
   $scope.addCourse = function() {

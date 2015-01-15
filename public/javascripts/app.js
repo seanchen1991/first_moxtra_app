@@ -9,19 +9,22 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
       resolve: {
         coursePromise: ['courses', function(courses) {
           return courses.getAll();
+        }],
+        studentPromise: ['students', function(students) {
+          return students.getStudent();
         }]
       }
     })
-    .state('user', {
-      url: '/user',
-      templateUrl: '/user.html',
-      controller: 'MainCtrl',
-      resolve: {
-        userPromise: ['students', function(students) {
-          return students.getAllCourses();
-        }]
-      }
-    })
+    // .state('user', {
+    //   url: '/user',
+    //   templateUrl: '/user.html',
+    //   controller: 'MainCtrl',
+    //   resolve: {
+    //     userPromise: ['students', function(students) {
+    //       return students.getAllCourses();
+    //     }]
+    //   }
+    // })
     // .state('course', {
     //   url: '/course/{id}',
     //   templateUrl: '/course.html',

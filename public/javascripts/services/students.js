@@ -2,15 +2,15 @@ app.factory('students', ['$http', function($http) {
   var u = {
     student: null
   };
-  u.getAllCourses = function() {
-    return $http.get('/students/' + student.username).success(function(data) {
-      angular.copy(data, u.student.courses);
-    })
+  u.getStudent = function() {
+    return $http.get('/login/data').then(function(res) {
+      u.student = res.data;
+    });
   };
   u.enroll = function(course) {
-    return $http.post('/students/' + student.username).success(function(data) {
+    return $http.post('/students/' + u.student.username).success(function(data) {
       u.student.courses.push(course);
-    })
+    });
   };
   return u;
 }])

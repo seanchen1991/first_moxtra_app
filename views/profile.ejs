@@ -22,9 +22,9 @@
     <script type="text/ng-template" id="/home.html">
         <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
             <li class="active"><a href="#allcourses" data-toggle="tab">All Courses</a></li>
-            <li><a ui-sref="user" data-toggle="tab">Your Courses</a></li>
+            <li><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
         </ul>
-        
+
         <div id="my-tab-content" class="tab-content">
             <div class="tab-pane active" id="allcourses">
                 <div class="container">
@@ -57,29 +57,22 @@
                         </li>
                     </ul>
                 </div>
-            </div> 
-        </div> 
-    </script>
+            </div>  
 
-    <script type="text/ng-template" id="/user.html">
-        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
-            <li><a ui-sref="home" data-toggle="tab">All Courses</a></li>
-            <li class="active"><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
-        </ul>
-
-        <div class="tab-pane active" id="yourcourses">
-            <div class="container">
-                <h4>Your Enrolled Courses</h4>
-                <ul>
-                    <li ng-repeat="course in student.courses">
-                        <blockquote>
-                            <strong>Course Title: </strong>{{course.title}}<br>
-                            <strong>Course Description: </strong>{{course.description}}<br>
-                            <strong>Professor: </strong>{{course.professor}}
-                        </blockquote>
-                        <button class="form-group" ng-click="join(course)">Join Course</button>
-                    </li>
-                </ul>
+            <div class="tab-pane" id="yourcourses">
+                <div class="container">
+                    <h4>Your Enrolled Courses</h4>
+                    <ul>
+                        <li ng-repeat="course in userCourses">
+                            <blockquote>
+                                <strong>Course Title: </strong>{{course.title}}<br>
+                                <strong>Course Description: </strong>{{course.description}}<br>
+                                <strong>Professor: </strong>{{course.professor}}
+                            </blockquote>
+                            <button class="form-group" ng-click="join(course)">Join Course</button>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </script>
