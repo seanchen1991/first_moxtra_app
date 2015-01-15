@@ -2,7 +2,6 @@ module.exports = function(app, passport) {
 
   app.get('/', function(req, res) {
     res.render('index.ejs');
-    // res.render('profile.ejs');
   });
 
   app.get('/login', function(req, res) {

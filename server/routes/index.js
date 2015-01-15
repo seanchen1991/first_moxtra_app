@@ -86,7 +86,7 @@ router.get('/students/:username', function(req, res) {
   res.json(req.student);
 });
 
-router.post('/students/:username/courses', function(req, res, next) {
+router.post('/students/:username', function(req, res, next) {
   var course = new Course(req.body);
   course.student = req.student;
 

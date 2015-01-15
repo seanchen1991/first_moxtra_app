@@ -15,10 +15,10 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
     .state('user', {
       url: '/user',
       templateUrl: '/user.html',
-      controller: 'UserCtrl',
+      controller: 'MainCtrl',
       resolve: {
-        userPromise: ['userCourses', function(userCourses) {
-          return userCourses.getAll();
+        userPromise: ['students', function(students) {
+          return students.getAllCourses();
         }]
       }
     })
