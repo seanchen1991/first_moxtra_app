@@ -4,7 +4,8 @@ var CourseSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
   professor: String,
-  enrolled: { type: Number, default: 0 }
+  enrolled: { type: Number, default: 0 },
+  binderId: { type: String, unique: true }
 });
 
 CourseSchema.methods.incrementEnrolled = function(cb) {
