@@ -8,8 +8,8 @@ app.factory('students', ['$http', function($http) {
     });
   };
   u.enroll = function(course) {
-    return $http.put('/students/' + u.student.username).success(function(data) {
-      angular.copy(data, u.student.courses);
+    return $http.post('/students/' + u.student.username + '/enroll', course).success(function(data) {
+      u.student.courses.push(data);
     });
   };
   return u;

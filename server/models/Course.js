@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var CourseSchema = new mongoose.Schema({
-  title: String,
+  title: { type: String, required: true },
   description: String,
   professor: String,
   enrolled: { type: Number, default: 0 }

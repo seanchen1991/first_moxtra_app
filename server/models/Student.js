@@ -4,7 +4,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var studentSchema = mongoose.Schema({
   username : { type: String, required: true },
   password : { type: String, require: true },
-  courses : [ {type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
+  courses : []
 });
 
 studentSchema.methods.generateHash = function(password) {

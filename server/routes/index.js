@@ -86,17 +86,15 @@ router.get('/students/:username', function(req, res) {
   res.json(req.student);
 });
 
-router.put('/students/:username', function(req, res, next) {
+router.post('/students/:username/enroll', function(req, res, next) {
   var course = new Course(req.body);
-  course.student = req.student;
+  var student = req.student;
 
-  course.save(function(err, course) {
-    req.student.courses.push(course);
-    req.student.save(function(err, student) {
-      if (err)
-        return next(err);
-      res.json(course);
-    });
+  student.courses.push(course);
+  student.save(function(err, student) {
+    if (err)
+      return next(err);
+    res.json(course);
   });
 });
 

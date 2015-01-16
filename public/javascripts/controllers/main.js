@@ -1,5 +1,6 @@
 app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, courses, students) {
   $scope.courses = courses.courses;
+  $scope.student = students.student;
 
   $scope.addCourse = function() {
     if (!$scope.title || $scope.title === '') return;
@@ -14,7 +15,7 @@ app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, co
   };
 
   $scope.enroll = function(course) {
-    students.enroll(course);
     courses.incrementEnrolled(course);
+    students.enroll(course);
   };
 }])
