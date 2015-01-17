@@ -11,6 +11,7 @@
   "dependencies": {
     "bootstrap": "latest",
     "font-awesome": "latest",
+    "jquery": ">= 1.11.0",
     "angular": "latest",
     "angular-ui-router": "latest"
   }

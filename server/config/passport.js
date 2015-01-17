@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
+var OAuth = require('passport-oauth').OAuth2Strategy;
 var Student = require('./../models/Student');
 
 module.exports = function(passport) {
