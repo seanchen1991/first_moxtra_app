@@ -23,6 +23,7 @@ require('./server/config/passport')(passport);
 
 var routes = require('./server/routes/index');
 var users = require('./server/routes/users');
+var token = require('./server/authorization/token');
 
 var app = express();
 
