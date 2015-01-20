@@ -1,5 +1,4 @@
 var LocalStrategy = require('passport-local').Strategy;
-var OAuth = require('passport-oauth').OAuth2Strategy;
 var Student = require('./../models/Student');
 
 module.exports = function(passport) {
@@ -45,7 +44,7 @@ module.exports = function(passport) {
     passReqToCallback: true
   },
   function(req, username, password, done) {
-    Student.findOne({ 'username': username }, function(err, student) {
+    Student.findOne({ 'username' : username }, function(err, student) {
       if (err)
         return done(err);
       if (!student)

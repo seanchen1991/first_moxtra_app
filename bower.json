@@ -1,7 +1,9 @@
 {
   "name": "demo-moxtra-app",
   "version": "0.0.0",
-  "authors": ["Sean Chen"],
+  "authors": [
+    "Sean Chen"
+  ],
   "ignore": [
     "**/.*",
     "node_modules",
