@@ -22,8 +22,6 @@ require('./server/models/Student');
 require('./server/config/passport')(passport);
 
 var routes = require('./server/routes/index');
-var users = require('./server/routes/users');
-var token = require('./server/authorization/token');
 
 var app = express();
 
@@ -47,7 +45,6 @@ app.use(flash());
 require('./server/routes/routes.js')(app, passport);
 
 app.use('/', routes);
-app.use('/users', users);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
