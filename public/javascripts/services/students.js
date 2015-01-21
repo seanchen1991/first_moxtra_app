@@ -4,6 +4,7 @@ app.factory('students', ['$http', function($http) {
   };
   u.getStudent = function() {
     return $http.get('/login/data').then(function(res) {
+      console.log(res.data);
       u.student = res.data;
     });
   };
