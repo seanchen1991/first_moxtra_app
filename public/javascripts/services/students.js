@@ -4,9 +4,13 @@ app.factory('students', ['$http', function($http) {
   };
   u.getStudent = function() {
     return $http.get('/login/data').then(function(res) {
-      console.log(res.data);
       u.student = res.data;
     });
+  };
+  u.getToken = function() {
+    return $http.get('/students/' + u.student.username + '/token').success(function(data) {
+      u.student.token = data.access_token;
+    })
   };
   u.enroll = function(course) {
     return $http.post('/students/' + u.student.username + '/enroll', course).success(function(data) {

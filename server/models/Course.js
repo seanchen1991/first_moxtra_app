@@ -5,7 +5,7 @@ var CourseSchema = new mongoose.Schema({
   description: String,
   professor: String,
   enrolled: { type: Number, default: 0 },
-  binderId: { type: String, unique: true }
+  binderID: { type: String }
 });
 
 CourseSchema.methods.incrementEnrolled = function(cb) {
