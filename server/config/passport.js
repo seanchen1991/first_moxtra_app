@@ -17,13 +17,13 @@ module.exports = function(passport) {
     passwordField: 'password',
     passReqToCallback: true
   },
-  function(req, username, password, done) {
+  function(req, username, password, next) {
     process.nextTick(function() {
       Student.findOne({ 'username' : username }, function(err, student) {
         if (err)
-          return done(err);
+          return next(err);
         if (student) {
-          return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+          return next(null, false, req.flash('signupMessage', 'That username is already taken.'));
         } else {
           var newStudent = new Student();
           newStudent.username = username;
@@ -31,11 +31,11 @@ module.exports = function(passport) {
           newStudent.save(function(err) {
             if (err)
               throw err;
-            return done(null, newStudent);
+            return next(null, newStudent);
           });
         }
       });
-    });
+    })
   }));
 
   passport.use('local-login', new LocalStrategy({

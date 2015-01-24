@@ -12,9 +12,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         }],
         studentPromise: ['students', function(students) {
           return students.getStudent();
-        }],
-        tokenPromise: ['students', function(students) {
-          return students.getToken();
         }]
       }
     })

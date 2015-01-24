@@ -7,6 +7,10 @@ var CryptoJS = require('crypto-js');
 var Course = mongoose.model('Course');
 var Student = mongoose.model('Student');
 
+var clientID = 'mpzVqzEzCIo';
+var clientSecret = 'vvui5RuC9sU';
+var grantType = 'http://www.moxtra.com/auth_uniqueid';
+
 /* GET home page. */
 router.get('/', function(req, res) {
   res.render('index', { title: 'Express' });
@@ -52,12 +56,20 @@ router.post('/courses', function(req, res, next) {
   });
 });
 
+// router.get('/students/:username/binderid', function(req, res) {
+//   request.post('https://api.moxtra.com/v1/me/binders?access_token=' + req.student.token, function(err, response, body) {
+//     if (!err && response.statusCode == 200) {
+//       var parsed = JSON.parse(body);
+//       res.json(parsed);
+//     }
+//   }).catch(console.error);
+// });
+
 // router.post('/courses', function(req, res, next) {
 //   var course = new Course(req.body);
 //   request.post('https://api.moxtra.com/v1/me/binders?access_token='+token, function(err, response, body) {
 //     if (!err && response.statusCode == 200) {
 //       course.binderID = body.binderID;
-//       console.log("Course: ", course);
 //     }
 //   }).then(
 //     course.save(function(err, course) {
@@ -89,46 +101,8 @@ router.get('/students', function(req, res, next) {
 });
 
 router.post('/students', function(req, res, next) {
-  var student = new Student(req.body);
-
-  student.save(function(err, student) {
-    if (err)
-      return next(err);
-    res.json(student);
-  });
-});
-
-// router.post('/students', function(req, res, next) {
-//   var student;
-//   var uniqueID = req.user._id;
-//   var timestamp = new Date().getTime();
-//   var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
-//   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-//   var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-//   var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
-  
-//   request.post(url, function(err, response, body) {
-//     if (!err && response.statusCode == 200) {
-//       console.log("Students post route body: ", body);
-//       req.body.token = body;
-//       student = new Student(req.body);
-//     }
-//   }).then(student.save(function(err, student) {
-//     if (err)
-//       return next(err);
-//     res.json(student);
-//   })).catch(console.error);
-// });
-
-router.get('/students/:username', function(req, res) {
-  res.json(req.student);
-});
-
-router.get('/students/:username/token', function(req, res) {
-  var clientID = 'mpzVqzEzCIo';
-  var clientSecret = 'vvui5RuC9sU';
-  var grantType = 'http://www.moxtra.com/auth_uniqueid';
-  var uniqueID = req.student._id;
+  var student;
+  var uniqueID = req.user._id;
   var timestamp = new Date().getTime();
   var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
@@ -137,11 +111,36 @@ router.get('/students/:username/token', function(req, res) {
   
   request.post(url, function(err, response, body) {
     if (!err && response.statusCode == 200) {
-      var parsed = JSON.parse(body);
-      res.json(parsed);
+      console.log("Students post route body: ", body);
+      req.body.token = body;
+      student = new Student(req.body);
     }
-  }).catch(console.error);
+  }).then(student.save(function(err, student) {
+    if (err)
+      return next(err);
+    res.json(student);
+  })).catch(console.error);
 });
+
+router.get('/students/:username', function(req, res) {
+  res.json(req.student);
+});
+
+// router.get('/students/:username/token', function(req, res) {
+//   var uniqueID = req.student._id;
+//   var timestamp = new Date().getTime();
+//   var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
+//   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+//   var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+//   var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
+  
+//   request.post(url, function(err, response, body) {
+//     if (!err && response.statusCode == 200) {
+//       var parsed = JSON.parse(body);
+//       res.json(parsed);
+//     }
+//   }).catch(console.error);
+// });
 
 router.post('/students/:username/enroll', function(req, res, next) {
   var course = new Course(req.body);
@@ -156,25 +155,21 @@ router.post('/students/:username/enroll', function(req, res, next) {
 });
 
 router.get('/login/data', function(req, res) {
-  res.json(req.user);
-});
-
-// router.get('/login/data', function(req, res) {
-//   var uniqueID = req.user._id;
-//   var timestamp = new Date().getTime();
-//   var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
-//   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-//   var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-//   var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
+  var uniqueID = req.user._id;
+  var timestamp = new Date().getTime();
+  var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
+  var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+  var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+  var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
   
-//   request.post(url, function(err, response, body) {
-//     if (!err && response.statusCode == 200) {
-//       var parsed = JSON.parse(body);
-//       token = parsed.access_token;
-//       req.user.token = token;
-//       res.json(req.user);
-//     }
-//   })
-// });
+  request.post(url, function(err, response, body) {
+    if (!err && response.statusCode == 200) {
+      var parsed = JSON.parse(body);
+      token = parsed.access_token;
+      req.user.token = token;
+    }
+  }).then(res.json(req.user))
+  .catch(console.error);
+});
 
 module.exports = router;
