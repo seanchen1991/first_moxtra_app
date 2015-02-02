@@ -101,12 +101,12 @@ router.get('/students', function(req, res, next) {
 });
 
 router.get('/students/:id', function(req, res) {
-  res.json(req.student);
+  res.json(req.student[0]);
 });
 
 router.post('/students/:id/enroll', function(req, res, next) {
   var course = new Course(req.body);
-  var student = req.student;
+  var student = req.student[0];
 
   student.courses.push(course);
   student.save(function(err, student) {
