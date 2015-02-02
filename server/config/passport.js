@@ -7,11 +7,13 @@ var configAuth = require('./auth');
 
 module.exports = function(passport) {
   passport.serializeUser(function(student, done) {
+    console.log("Serialize Student:", student);
     done(null, student.uniqueID);
   });
 
   passport.deserializeUser(function(id, done) {
-    Student.findById(id, function(err, student) {
+    console.log("Deserialize id:", id);
+    Student.find({ uniqueID: id }, function(err, student) {
       done(err, student);
     });
   });
@@ -66,30 +68,30 @@ module.exports = function(passport) {
     clientSecret: configAuth.moxtraAuth.clientSecret,
     callbackURL: configAuth.moxtraAuth.callbackURL
   },
-  function(accessToken, done) {
-    console.log("Access token: ", accessToken);
+  function(accessToken, refreshToken, profile, done) {
     var url = 'https://api.moxtra.com/me?access_token=' + accessToken;
     request.get(url, function(err, response, body) {
       if (!err && response.statusCode == 200) {
-        console.log("Response body: ", body);
+        var parsed = JSON.parse(body);
+        console.log("Parsed OAuth body:", parsed);
+        Student.findOne({ 'uniqueID' : parsed.data.id }, function(err, student) {
+          if (err)
+            return done(err)
+          if (student) {
+            return done(null, student);
+          } else {
+            var newStudent = new Student();
+            newStudent.name = parsed.data.name;
+            newStudent.uniqueID = parsed.data.id;
+            newStudent.email = parsed.data.email;
+            newStudent.save(function(err) {
+              if (err)
+                throw err;
+              return done(null, newStudent);
+            });
+          }
+        });
       }
     });
-      // Student.findOne({ 'uniqueID' : body.id }, function(err, student) {
-      //   if (err)
-      //     return done(err)
-      //   if (student) {
-      //     return done(null, student);
-      //   } else {
-      //     var newStudent = new Student();
-      //     newStudent.name = body.name;
-      //     newStudent.uniqueID = body.id;
-      //     newStudent.email = body.email;
-      //     newStudent.save(function(err) {
-      //       if (err)
-      //         throw err;
-      //       return done(null, newStudent);
-      //     });
-      //   }
-      // });
   }));
 };
