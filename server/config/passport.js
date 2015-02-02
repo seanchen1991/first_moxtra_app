@@ -17,8 +17,8 @@ module.exports = function(passport) {
   });
 
   passport.use('moxtra', new OAuthStrategy({
-    authorizationURL: 'https://api.moxtra.com/oauth/authorize',
-    tokenURL: 'https://api.moxtra.com/oauth/token',
+    authorizationURL: configAuth.moxtraAuth.authorizationURL,
+    tokenURL: configAuth.moxtraAuth.tokenURL,
     clientID: configAuth.moxtraAuth.clientID,
     clientSecret: configAuth.moxtraAuth.clientSecret,
     callbackURL: configAuth.moxtraAuth.callbackURL

@@ -8,26 +8,6 @@ module.exports = function(app, passport) {
     res.render('index.ejs');
   });
 
-  app.get('/login', function(req, res) {
-    res.render('login.ejs', { message: req.flash('loginMessage') });
-  });
-
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect : '/profile',
-    failureRedirect : '/login',
-    failureFlash : true
-  }));
-
-  app.get('/signup', function(req, res) {
-    res.render('signup.ejs', { message: req.flash('signupMessage') });
-  });
-
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect : '/profile',
-    failureRedirect : '/signup',
-    failureFlash : true
-  }));
-
   app.get('/auth/moxtra', passport.authenticate('moxtra'));
 
   app.get('/auth/moxtra/callback', passport.authenticate('moxtra', {
@@ -54,3 +34,22 @@ function isLoggedIn(req, res, next) {
   res.redirect('/');
 }
 
+  // app.get('/login', function(req, res) {
+  //   res.render('login.ejs', { message: req.flash('loginMessage') });
+  // });
+
+  // app.post('/login', passport.authenticate('local-login', {
+  //   successRedirect : '/profile',
+  //   failureRedirect : '/login',
+  //   failureFlash : true
+  // }));
+
+  // app.get('/signup', function(req, res) {
+  //   res.render('signup.ejs', { message: req.flash('signupMessage') });
+  // });
+
+  // app.post('/signup', passport.authenticate('local-signup', {
+  //   successRedirect : '/profile',
+  //   failureRedirect : '/signup',
+  //   failureFlash : true
+  // }));

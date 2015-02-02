@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 
 var CourseSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: String,
-  professor: String,
+  description: { type: String },
+  professor: { type: String },
   enrolled: { type: Number, default: 0 },
   binderID: { type: String }
 });
