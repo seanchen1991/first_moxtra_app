@@ -4,6 +4,7 @@ var bcrypt   = require('bcrypt-nodejs');
 var studentSchema = mongoose.Schema({
   uniqueID : { type: String },
   name : { type: String },
+  email : { type: String },
   courses: []
 });
 

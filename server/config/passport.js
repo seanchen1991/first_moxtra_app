@@ -7,16 +7,47 @@ var configAuth = require('./auth');
 
 module.exports = function(passport) {
   passport.serializeUser(function(student, done) {
-    console.log("Serialize Student:", student);
     done(null, student.uniqueID);
   });
 
   passport.deserializeUser(function(id, done) {
-    console.log("Deserialize id:", id);
     Student.find({ uniqueID: id }, function(err, student) {
       done(err, student);
     });
   });
+
+  passport.use('moxtra', new OAuthStrategy({
+    authorizationURL: 'https://api.moxtra.com/oauth/authorize',
+    tokenURL: 'https://api.moxtra.com/oauth/token',
+    clientID: configAuth.moxtraAuth.clientID,
+    clientSecret: configAuth.moxtraAuth.clientSecret,
+    callbackURL: configAuth.moxtraAuth.callbackURL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    var url = 'https://api.moxtra.com/me?access_token=' + accessToken;
+    request.get(url, function(err, response, body) {
+      if (!err && response.statusCode == 200) {
+        var parsed = JSON.parse(body);
+        Student.findOne({ 'uniqueID' : parsed.data.id }, function(err, student) {
+          if (err)
+            return done(err)
+          if (student) {
+            return done(null, student);
+          } else {
+            var newStudent = new Student();
+            newStudent.name = parsed.data.name;
+            newStudent.uniqueID = parsed.data.id;
+            newStudent.email = parsed.data.email;
+            newStudent.save(function(err) {
+              if (err)
+                throw err;
+              return done(null, newStudent);
+            });
+          }
+        });
+      }
+    });
+  }));
 
   // passport.use('local-signup', new LocalStrategy({
   //   usernameField: 'username',
@@ -60,38 +91,4 @@ module.exports = function(passport) {
   //     return done(null, student);
   //   });
   // }));
-
-  passport.use('moxtra', new OAuthStrategy({
-    authorizationURL: 'https://api.moxtra.com/oauth/authorize',
-    tokenURL: 'https://api.moxtra.com/oauth/token',
-    clientID: configAuth.moxtraAuth.clientID,
-    clientSecret: configAuth.moxtraAuth.clientSecret,
-    callbackURL: configAuth.moxtraAuth.callbackURL
-  },
-  function(accessToken, refreshToken, profile, done) {
-    var url = 'https://api.moxtra.com/me?access_token=' + accessToken;
-    request.get(url, function(err, response, body) {
-      if (!err && response.statusCode == 200) {
-        var parsed = JSON.parse(body);
-        console.log("Parsed OAuth body:", parsed);
-        Student.findOne({ 'uniqueID' : parsed.data.id }, function(err, student) {
-          if (err)
-            return done(err)
-          if (student) {
-            return done(null, student);
-          } else {
-            var newStudent = new Student();
-            newStudent.name = parsed.data.name;
-            newStudent.uniqueID = parsed.data.id;
-            newStudent.email = parsed.data.email;
-            newStudent.save(function(err) {
-              if (err)
-                throw err;
-              return done(null, newStudent);
-            });
-          }
-        });
-      }
-    });
-  }));
 };
