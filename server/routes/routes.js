@@ -28,6 +28,14 @@ module.exports = function(app, passport) {
     failureFlash : true
   }));
 
+  app.get('/auth/moxtra', passport.authenticate('moxtra'));
+
+  app.get('/auth/moxtra/callback', passport.authenticate('moxtra', {
+    successRedirect : '/profile',
+    failureRedirect : '/',
+    failureFlash : true
+  }));
+
   app.get('/profile', isLoggedIn, function(req, res) {
     res.render('profile.ejs', {
       user : req.user
@@ -41,31 +49,8 @@ module.exports = function(app, passport) {
 };
 
 function isLoggedIn(req, res, next) {
-  var student = Student.findById(req.user._id);
-  var clientID = 'mpzVqzEzCIo';
-  var clientSecret = 'vvui5RuC9sU';
-  var grantType = 'http://www.moxtra.com/auth_uniqueid';
-  var uniqueID = student._id;
-  var timestamp = new Date().getTime();
-  var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
-  var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-  var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-  var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
-  
-  if (req.isAuthenticated()) {
-    if (student.token === undefined) {
-      request.post(url, function(err, response, body) {
-      if (!err && response.statusCode == 200) {
-        var parsed = JSON.parse(body);
-        student.token = parsed.access_token;
-      }
-    }).then(student.save(function(err) {
-      if (err) throw err;
-    }))
-    .catch(console.error); 
-    }
+  if (req.isAuthenticated()) 
     return next();
-  }
   res.redirect('/');
 }
 

@@ -100,27 +100,27 @@ router.get('/students', function(req, res, next) {
   });
 });
 
-router.post('/students', function(req, res, next) {
-  var student;
-  var uniqueID = req.user._id;
-  var timestamp = new Date().getTime();
-  var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
-  var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-  var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-  var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
+// router.post('/students', function(req, res, next) {
+//   var student;
+//   var uniqueID = req.user._id;
+//   var timestamp = new Date().getTime();
+//   var hash = CryptoJS.HmacSHA256(clientID + uniqueID + timestamp, clientSecret);
+//   var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+//   var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+//   var url = 'https://api.moxtra.com/oauth/token?client_id='+clientID+'&client_secret='+clientSecret+'&grant_type='+grantType+'&uniqueid='+uniqueID+'&timestamp='+timestamp+'&signature='+signature;
   
-  request.post(url, function(err, response, body) {
-    if (!err && response.statusCode == 200) {
-      console.log("Students post route body: ", body);
-      req.body.token = body;
-      student = new Student(req.body);
-    }
-  }).then(student.save(function(err, student) {
-    if (err)
-      return next(err);
-    res.json(student);
-  })).catch(console.error);
-});
+//   request.post(url, function(err, response, body) {
+//     if (!err && response.statusCode == 200) {
+//       console.log("Students post route body: ", body);
+//       req.body.token = body;
+//       student = new Student(req.body);
+//     }
+//   }).then(student.save(function(err, student) {
+//     if (err)
+//       return next(err);
+//     res.json(student);
+//   })).catch(console.error);
+// });
 
 router.get('/students/:username', function(req, res) {
   res.json(req.student);
