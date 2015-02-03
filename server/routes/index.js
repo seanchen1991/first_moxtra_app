@@ -48,19 +48,27 @@ router.get('/courses', function(req, res, next) {
 });
 
 router.post('/courses', function(req, res, next) {
-  request.post(moxtraData.moxtraAuth.binderURL + req.student.uniqueID, function(err, response, body) {
-    if (!err && response.statusCode == 200) {
-      console.log(body);
+  var course = new Course(req.body);
+  var options = {
+    method: 'post',
+    url: moxtraData.moxtraAuth.binderURL + req.user[0].token,
+    name: course.title,
+    headers: {
+      'content-type': 'application/json'
     }
-  });
-
-  // var course = new Course(req.body);
-
-  // course.save(function(err, course) {
-  //   if (err)
-  //     return next(err);
-  //   res.json(course);
-  // });
+  };
+  request(options, function(err, response, body) {
+    if (!err && response.statusCode == 200) {
+      console.log("Request fired");
+      course.binderID = body.data.id;
+    }
+  }).then(
+    course.save(function(err, course) {
+      if (err)
+        return next(err);
+      res.json(course);
+    })
+  ).catch(console.error);
 });
 
 router.get('/courses/:course', function(req, res) {
@@ -106,21 +114,6 @@ router.post('/students/:id/enroll', function(req, res, next) {
 //       res.json(parsed);
 //     }
 //   }).catch(console.error);
-// });
-
-// router.post('/courses', function(req, res, next) {
-//   var course = new Course(req.body);
-//   request.post('https://api.moxtra.com/v1/me/binders?access_token='+token, function(err, response, body) {
-//     if (!err && response.statusCode == 200) {
-//       course.binderID = body.binderID;
-//     }
-//   }).then(
-//     course.save(function(err, course) {
-//       if (err)
-//         return next(err);
-//       res.json(course);
-//     })
-//   ).catch(console.error);
 // });
 
 module.exports = router;

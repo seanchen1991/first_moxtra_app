@@ -8,7 +8,8 @@ module.exports = {
     'callbackURL' : 'http://localhost:8000/auth/moxtra/callback',
     'authorizationURL' : 'https://api.moxtra.com/oauth/authorize',
     'tokenURL' : 'https://api.moxtra.com/oauth/token',
-    'binderURL' : 'https://api.moxtra.com/me/binders?access_token='
+    'userURL' : 'https://api.moxtra.com/me?access_token=',
+    'binderURL' : 'https://api.moxtra.com/v1/me/binders?access_token='
   }
 
 };

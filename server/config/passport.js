@@ -24,8 +24,7 @@ module.exports = function(passport) {
     callbackURL: configAuth.moxtraAuth.callbackURL
   },
   function(accessToken, refreshToken, profile, done) {
-    var url = 'https://api.moxtra.com/me?access_token=' + accessToken;
-    request.get(url, function(err, response, body) {
+    request.get(configAuth.moxtraAuth.userURL + accessToken, function(err, response, body) {
       if (!err && response.statusCode == 200) {
         var parsed = JSON.parse(body);
         Student.findOne({ 'uniqueID' : parsed.data.id }, function(err, student) {
@@ -38,6 +37,7 @@ module.exports = function(passport) {
             newStudent.name = parsed.data.name;
             newStudent.uniqueID = parsed.data.id;
             newStudent.email = parsed.data.email;
+            newStudent.token = accessToken;
             newStudent.save(function(err) {
               if (err)
                 throw err;
