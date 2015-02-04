@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var request = require('request-promise');
+var request = require('request');
 var CryptoJS = require('crypto-js');
 var moxtraData = require('./../config/auth')
 
@@ -51,25 +51,22 @@ router.post('/courses', function(req, res, next) {
   var course = new Course(req.body);
   var options = {
     method: 'post',
+    json: true,
     url: moxtraData.moxtraAuth.binderURL + req.user[0].token,
-    name: course.title,
-    headers: {
-      'content-type': 'application/json'
-    }
+    headers: { 'content-type': 'application/json' },
+    body: { 'name': course.title }
   };
   request(options, function(err, response, body) {
     if (!err && response.statusCode == 200) {
-      console.log("Request fired");
       course.binderID = body.data.id;
+      course.save(function(err, course) {
+        if (err)
+          return next(err);
+        res.json(course);
+      })
     }
-  }).then(
-    course.save(function(err, course) {
-      if (err)
-        return next(err);
-      res.json(course);
-    })
-  ).catch(console.error);
-});
+  })
+})
 
 router.get('/courses/:course', function(req, res) {
   res.json(req.course);

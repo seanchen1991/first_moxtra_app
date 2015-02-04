@@ -2,7 +2,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuth2Strategy;
 var Student = require('./../models/Student');
 
-var request = require('request-promise');
+var request = require('request');
 var configAuth = require('./auth');
 
 module.exports = function(passport) {
