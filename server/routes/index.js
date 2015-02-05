@@ -79,8 +79,12 @@ router.put('/courses/:course/enroll', function(req, res, next) {
   course.incrementEnrolled(function(err, course) {
     if (err)
       return next(err);
-    course.students.push(req.user.uniqueID);
-    res.json(course);
+    course.students.push(req.user[0].uniqueID);
+    course.save(function(err, course) {
+      if (err)
+        return next(err);
+      res.json(course);
+    });
   });
 });
 
