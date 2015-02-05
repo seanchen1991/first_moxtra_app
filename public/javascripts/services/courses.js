@@ -5,7 +5,7 @@ app.factory('courses', ['$http', 'students', function($http, students) {
   o.create = function(course) {
     return $http.post('/courses', course).success(function(data) {
       o.courses.push(data);
-      students.enroll(course);
+      students.student.courses.push(data);
     });
   };
   o.get = function(id) {

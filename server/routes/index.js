@@ -49,18 +49,24 @@ router.get('/courses', function(req, res, next) {
 
 router.post('/courses', function(req, res, next) {
   var course = new Course(req.body);
+  var student = req.user[0];
   var options = {
     method: 'post',
     json: true,
-    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + req.user[0].token,
+    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token,
     headers: { 'content-type': 'application/json' },
     body: { 'name': course.title }
   };
   request(options, function(err, response, body) {
     if (!err && response.statusCode == 200) {
       course.binderID = body.data.id;
-      course.owner = req.user[0].uniqueID;
-      course.students.push(req.user[0].uniqueID);
+      course.owner = student.uniqueID;
+      course.students.push(student.uniqueID);
+      student.courses.push(course);
+      student.save(function(err, student) {
+        if (err)
+          return next(err);
+      });
       course.save(function(err, course) {
         if (err)
           return next(err);
@@ -103,44 +109,38 @@ router.get('/students/:id', function(req, res) {
 router.post('/students/:id/enroll', function(req, res, next) {
   var course = new Course(req.body);
   var student = req.student[0];
-
-  student.courses.push(course);
-  student.save(function(err, student) {
-    if (err)
-      return next(err);
-    res.json(course);
+  var options = {
+    method: 'post',
+    json: true,
+    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token + '&binder_id=' + course.binderID + '/inviteuser',
+    headers: { 'content-type': 'application/json' },
+    body: {
+      'users': [
+        {
+          'user': {
+            'unique_id': student.uniqueID
+          }
+        }
+      ],
+      'email_off': true,
+      'notification_off': true,
+      'suppress_feed': true
+    }
+  };
+  request(options, function(err, response, body) {
+    console.log("Response:", response);
+    if (!err && response.statusCode == 200) {
+      console.log("Response body:", body);
+      student.courses.push(course);
+      console.log("Student body:", student);
+      student.save(function(err, student) {
+        if (err)
+          return next(err);
+        console.log("Student enrolled");
+        res.json(course);
+      });
+    }
   });
-  // var options = {
-  //   method: 'post',
-  //   json: true,
-  //   url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token + '&binder_id=' + course.binderID + '/inviteuser',
-  //   headers: { 'content-type': 'application/json' },
-  //   body: {
-  //     'users': [
-  //       {
-  //         'user': {
-  //           'unique_id': student.uniqueID
-  //         }
-  //       }
-  //     ],
-  //     'email_off': true,
-  //     'notification_off': true
-  //   }
-  // };
-  // request(options, function(err, response, body) {
-  //   console.log("Response:", response);
-  //   if (!err && response.statusCode == 200) {
-  //     console.log("Response body:", body);
-  //     student.courses.push(course);
-  //     console.log("Student body:", student);
-  //     student.save(function(err, student) {
-  //       if (err)
-  //         return next(err);
-  //       console.log("Student enrolled");
-  //       res.json(course);
-  //     });
-  //   }
-  // });
 });
 
 // router.get('/students/:username/binderid', function(req, res) {
