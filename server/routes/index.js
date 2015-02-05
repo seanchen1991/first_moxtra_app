@@ -52,30 +52,34 @@ router.post('/courses', function(req, res, next) {
   var options = {
     method: 'post',
     json: true,
-    url: moxtraData.moxtraAuth.binderURL + req.user[0].token,
+    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + req.user[0].token,
     headers: { 'content-type': 'application/json' },
     body: { 'name': course.title }
   };
   request(options, function(err, response, body) {
     if (!err && response.statusCode == 200) {
       course.binderID = body.data.id;
+      course.owner = req.user[0].uniqueID;
+      course.students.push(req.user[0].uniqueID);
       course.save(function(err, course) {
         if (err)
           return next(err);
         res.json(course);
-      })
+      });
     }
-  })
-})
+  });
+});
 
 router.get('/courses/:course', function(req, res) {
   res.json(req.course);
 });
 
 router.put('/courses/:course/enroll', function(req, res, next) {
-  req.course.incrementEnrolled(function(err, course) {
+  var course = req.course;
+  course.incrementEnrolled(function(err, course) {
     if (err)
       return next(err);
+    course.students.push(req.user.uniqueID);
     res.json(course);
   });
 });
@@ -102,6 +106,37 @@ router.post('/students/:id/enroll', function(req, res, next) {
       return next(err);
     res.json(course);
   });
+  // var options = {
+  //   method: 'post',
+  //   json: true,
+  //   url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token + '&binder_id=' + course.binderID + '/inviteuser',
+  //   headers: { 'content-type': 'application/json' },
+  //   body: {
+  //     'users': [
+  //       {
+  //         'user': {
+  //           'unique_id': student.uniqueID
+  //         }
+  //       }
+  //     ],
+  //     'email_off': true,
+  //     'notification_off': true
+  //   }
+  // };
+  // request(options, function(err, response, body) {
+  //   console.log("Response:", response);
+  //   if (!err && response.statusCode == 200) {
+  //     console.log("Response body:", body);
+  //     student.courses.push(course);
+  //     console.log("Student body:", student);
+  //     student.save(function(err, student) {
+  //       if (err)
+  //         return next(err);
+  //       console.log("Student enrolled");
+  //       res.json(course);
+  //     });
+  //   }
+  // });
 });
 
 // router.get('/students/:username/binderid', function(req, res) {

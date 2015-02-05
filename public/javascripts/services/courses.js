@@ -1,10 +1,11 @@
-app.factory('courses', ['$http', function($http) {
+app.factory('courses', ['$http', 'students', function($http, students) {
   var o = {
     courses: []
   };
   o.create = function(course) {
     return $http.post('/courses', course).success(function(data) {
       o.courses.push(data);
+      students.enroll(course);
     });
   };
   o.get = function(id) {
