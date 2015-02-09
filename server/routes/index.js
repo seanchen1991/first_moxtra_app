@@ -106,40 +106,48 @@ router.get('/students/:id', function(req, res) {
   res.json(req.student[0]);
 });
 
+router.get('/students/:id/access_token', function(req, res) {
+  res.json(req.student[0].token);
+});
+
 router.post('/students/:id/enroll', function(req, res, next) {
   var course = new Course(req.body);
   var student = req.student[0];
-  var options = {
-    method: 'post',
-    json: true,
-    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token + '&binder_id=' + course.binderID + '/inviteuser',
-    headers: { 'content-type': 'application/json' },
-    body: {
-      'users': [
-        {
-          'user': {
-            'unique_id': student.uniqueID
-          }
-        }
-      ],
-      'email_off': true,
-      'notification_off': true,
-      'suppress_feed': true
-    }
-  };
-  request(options, function(err, response, body) {
-    console.log("Response:", response);
-    if (!err && response.statusCode == 200) {
-      console.log("Response body:", body);
-      student.courses.push(course);
-      console.log("Student body:", student);
-      student.save(function(err, student) {
-        if (err)
-          return next(err);
-        console.log("Student enrolled");
-        res.json(course);
-      });
-    }
+  // var accessToken = Course.getAccessToken();
+  // var options = {
+  //   method: 'post',
+  //   json: true,
+  //   url: 'https://api.moxtra.com/' + course.binderID + '/inviteuser?access_token=' + accessToken,
+  //   headers: { 'content-type': 'application/json' },
+  //   body: {
+  //     'users': [
+  //       {
+  //         'user': {
+  //           'unique_id': student.uniqueID
+  //         }
+  //       }
+  //     ],
+  //     'email_off': true,
+  //     'notification_off': true,
+  //     'suppress_feed': true
+  //   }
+  // };
+  // request(options, function(err, response, body) {
+  //   console.log("Response body:", body);
+  //   if (!err && response.statusCode == 200) {
+  //     student.courses.push(course);
+  //     student.save(function(err, student) {
+  //       if (err)
+  //         return next(err);
+  //       res.json(course);
+  //     });
+  //   }
+  // });
+  student.courses.push(course);
+  student.save(function(err, student) {
+    if (err)
+      return next(err);
+    res.json(course);
   });
 });
 

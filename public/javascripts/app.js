@@ -1,4 +1,4 @@
-var app = angular.module('firstMoxtraDemo', ['ui.router']);
+var app = angular.module('firstMoxtraDemo', ['ui.router', 'ui.bootstrap']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
   $stateProvider
@@ -15,21 +15,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
         }]
       }
     })
-    // .state('user', {
-    //   url: '/user',
-    //   templateUrl: '/user.html',
-    //   controller: 'MainCtrl',
-    //   resolve: {
-    //     userPromise: ['students', function(students) {
-    //       return students.getAllCourses();
-    //     }]
-    //   }
-    // })
-    // .state('course', {
-    //   url: '/course/{id}',
-    //   templateUrl: '/course.html',
-    //   controller: 'CourseCtrl'
-    // });
   $urlRouterProvider.otherwise('home');
 }])
 

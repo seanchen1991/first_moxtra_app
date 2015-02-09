@@ -1,4 +1,5 @@
 app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, courses, students) {
+  
   $scope.courses = courses.courses;
   $scope.student = students.student;
 

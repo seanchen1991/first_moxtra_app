@@ -20,73 +20,92 @@
     <ui-view class="container"></ui-view>
 </div>
 
-    <script type="text/ng-template" id="/home.html">
-        <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
-            <li class="active"><a href="#allcourses" data-toggle="tab">All Courses</a></li>
-            <li><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
-        </ul>
+<script type="text/ng-template" id="/home.html">
+    <ul id="tabs" class="nav nav-tabs nav-justified" data-tabs="tabs">
+        <li class="active"><a href="#allcourses" data-toggle="tab">All Courses</a></li>
+        <li><a href="#yourcourses" data-toggle="tab">Your Courses</a></li>
+    </ul>
 
-        <div id="my-tab-content" class="tab-content">
-            <div class="tab-pane active" id="allcourses">
-                <div class="container">
-                    <form ng-submit="addCourse()">
-                        <h4>Submit a New Course</h4>
-                        <fieldset class="form-group">
-                            <textarea class="form-control" placeholder="Enter the name of the course." ng-model="title" title="Course Title"></textarea>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <textarea class="form-control" placeholder="Enter the course description." ng-model="description" title="Course Description"></textarea>
-                        </fieldset>
-                        <fieldset class="form-group">
-                            <textarea class="form-control" placeholder="Enter the name of the professor of this course." ng-model="professor" title="Professor"></textarea>
-                        </fieldset>
-                        <button type="submit" class="btn btn-primary">Submit Course</button>
-                    </form>
-                </div>
+    <div id="my-tab-content" class="tab-content">
+        <div class="tab-pane active" id="allcourses">
+            <div class="container">
+                <form ng-submit="addCourse()">
+                    <h4>Submit a New Course</h4>
+                    <fieldset class="form-group">
+                        <textarea class="form-control" placeholder="Enter the name of the course." ng-model="title" title="Course Title"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <textarea class="form-control" placeholder="Enter the course description." ng-model="description" title="Course Description"></textarea>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <textarea class="form-control" placeholder="Enter the name of the professor of this course." ng-model="professor" title="Professor"></textarea>
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary">Submit Course</button>
+                </form>
+            </div>
 
-                <div class="container">
-                    <h4>Course List</h4>
-                    <ul>
-                        <li ng-repeat="course in courses | orderBy: '-enrolled'">
-                            <blockquote>
-                                <strong>Course Title: </strong>{{course.title}}<br>
-                                <strong>Course Description: </strong>{{course.description}}<br>
-                                <strong>Professor: </strong>{{course.professor}}<br>
-                                <strong>Enrolled: </strong>{{course.enrolled}}
-                            </blockquote>
-                            <button class="form-group" ng-click="enroll(course)">Enroll</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>  
+            <div class="container">
+                <h4>Course List</h4>
+                <ul>
+                    <li ng-repeat="course in courses | orderBy: '-enrolled'">
+                        <blockquote>
+                            <strong>Course Title: </strong>{{course.title}}<br>
+                            <strong>Course Description: </strong>{{course.description}}<br>
+                            <strong>Professor: </strong>{{course.professor}}<br>
+                            <strong>Enrolled: </strong>{{course.enrolled}}
+                        </blockquote>
+                        <button class="form-group" ng-click="enroll(course)">Enroll</button>
+                    </li>
+                </ul>
+            </div>
+        </div>  
 
-            <div class="tab-pane" id="yourcourses">
-                <div class="container">
-                    <h4>Your Enrolled Courses</h4>
-                    <ul>
-                        <li ng-repeat="course in student.courses">
-                            <blockquote>
-                                <strong>Course Title: </strong>{{course.title}}<br>
-                                <strong>Course Description: </strong>{{course.description}}<br>
-                                <strong>Professor: </strong>{{course.professor}}
-                            </blockquote>
-                            <button class="form-group" ng-click="join(course)">Join Course</button>
-                        </li>
-                    </ul>
-                </div>
+        <div class="tab-pane" id="yourcourses">
+            <div class="container">
+                <h4>Your Enrolled Courses</h4>
+                <ul ng-controller="ChatCtrl">
+                    <li ng-repeat="course in student.courses">
+                        <blockquote>
+                            <strong>Course Title: </strong>{{course.title}}<br>
+                            <strong>Course Description: </strong>{{course.description}}<br>
+                            <strong>Professor: </strong>{{course.professor}}
+                        </blockquote>
+
+                        <button class="form-group" ng-click="join()">Join Course</button>
+                    </li>
+                </ul>
             </div>
         </div>
-    </script>
+    </div>
+</script>
+
+<script type="text/ng-template" id="chat.html">
+    <div class="modal-header">
+        <h3>Moxtra Chat</h3>
+    </div>
+    <div class="modal-body">
+        <ul>
+            <li ng-repeat="item in items">
+                <a ng-click="selected.item = item">{{item}}</a>
+            </li>
+        </ul>
+        Selected: <b>{{selected.item}}</b>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="ok()">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</script>
 
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/bootstrap/js/tab.js"></script>
     <script src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs" data-client-id="mpzVqzEzCIo"></script>
-    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/rollups/hmac-sha256.js"></script>
-    <script src="http://crypto-js.googlecode.com/svn/tags/3.1.2/build/components/enc-base64-min.js"></script>
     <script src="javascripts/app.js"></script>
     <script src="javascripts/controllers/main.js"></script>
+    <script src="javascripts/controllers/chat.js"></script>
     <script src="javascripts/services/students.js"></script>
     <script src="javascripts/services/courses.js"></script>
 
