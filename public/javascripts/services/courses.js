@@ -27,7 +27,7 @@ app.factory('courses', ['$http', 'students', function($http, students) {
   o.join = function(course) {
     var options = {
       binder_id: course.binderID,
-      iframe: true,
+      iframe: false,
       tagid4iframe: 'container',
       iframewidth: '500px',
       iframeheight: '450px',

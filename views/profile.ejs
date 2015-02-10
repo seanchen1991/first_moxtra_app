@@ -64,7 +64,7 @@
         <div class="tab-pane" id="yourcourses">
             <div class="container">
                 <h4>Your Enrolled Courses</h4>
-                <ul ng-controller="ChatCtrl">
+                <ul>
                     <li ng-repeat="course in student.courses">
                         <blockquote>
                             <strong>Course Title: </strong>{{course.title}}<br>
@@ -80,12 +80,12 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="chat.html">
+<!-- <script type="text/ng-template" id="chat.html">
     <div class="modal-body">
         <iframe src="https://www.moxtra.com/service/#api.chat/BJ9wA6SLTUZ4xcNxKyU51IK?client_id=mpzVqzEzCIo&amp;type=websdk&amp;origin=http%3A%2F%2Flocalhost%3A8000" frameborder="0" allowtransparency="true" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; border: none; background-color: transparent;">
         </iframe>
     </div>
-</script>
+</script> -->
 
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
