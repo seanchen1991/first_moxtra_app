@@ -20,7 +20,7 @@ app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, co
     students.enroll(course);
   };
 
-  $scope.join = function(course) {
-    courses.join(course);
-  };
+  // $scope.join = function(course) {
+  //   courses.join(course);
+  // };
 }])
