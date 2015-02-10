@@ -63,7 +63,7 @@
         <div class="tab-pane" id="yourcourses">
             <div class="container">
                 <h4>Your Enrolled Courses</h4>
-                <ul ng-controller="ChatCtrl">
+                <ul>
                     <li ng-repeat="course in student.courses">
                         <blockquote>
                             <strong>Course Title: </strong>{{course.title}}<br>
@@ -71,7 +71,7 @@
                             <strong>Professor: </strong>{{course.professor}}
                         </blockquote>
 
-                        <button class="form-group" ng-click="join()">Join Course</button>
+                        <button class="form-group" ng-click="join(course)">Join Course</button>
                     </li>
                 </ul>
             </div>
@@ -79,7 +79,7 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="chat.html">
+<!-- <script type="text/ng-template" id="chat.html">
     <div class="modal-header">
         <h3>Moxtra Chat</h3>
     </div>
@@ -95,17 +95,16 @@
         <button class="btn btn-primary" ng-click="ok()">OK</button>
         <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
     </div>
-</script>
+</script> -->
 
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <!-- <script src="lib/angular-bootstrap/ui-bootstrap-tpls.min.js"></script> -->
     <script src="lib/jquery/dist/jquery.min.js"></script>
     <script src="lib/bootstrap/js/tab.js"></script>
     <script src="https://www.moxtra.com/api/js/moxtra-latest.js" id="moxtrajs" data-client-id="mpzVqzEzCIo"></script>
     <script src="javascripts/app.js"></script>
     <script src="javascripts/controllers/main.js"></script>
-    <script src="javascripts/controllers/chat.js"></script>
     <script src="javascripts/services/students.js"></script>
     <script src="javascripts/services/courses.js"></script>
 

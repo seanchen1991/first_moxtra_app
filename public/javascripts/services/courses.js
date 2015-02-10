@@ -24,5 +24,35 @@ app.factory('courses', ['$http', 'students', function($http, students) {
         course.enrolled++;
       });
   };
+  o.join = function(course) {
+    var options = {
+      binder_id: course.binderID,
+      iframe: true,
+      tagid4iframe: 'container',
+      iframewidth: '500px',
+      iframeheight: '450px',
+      autostart_meet: true,
+      autostart_note: false,
+      start_chat: function(event) {
+        console.log('Chat started session Id: ' + event.session_id);
+      },
+      start_meet: function(event) {
+        console.log('Meet started session key: ' + event.session_key + ' session id: ' + event.session_id);
+      },
+      end_meet: function(event) {
+        console.log('Meet end event');
+      },
+      invite_member: function(event) {
+        console.log('Invite member into binder Id: ' + event.binder_id);
+      },
+      request_note: function(event) {
+        console.log('Note start request');
+      },
+      error: function(event) {
+        console.log('Chat error code: ' + event.error_code + ' error message: ' + event.error_message);
+      }
+    };
+    Moxtra.chat(options);
+  };
   return o;
 }])

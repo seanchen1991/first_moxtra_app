@@ -19,4 +19,8 @@ app.controller('MainCtrl', ['$scope', 'courses', 'students', function($scope, co
     courses.incrementEnrolled(course);
     students.enroll(course);
   };
+
+  $scope.join = function(course) {
+    courses.join(course);
+  };
 }])

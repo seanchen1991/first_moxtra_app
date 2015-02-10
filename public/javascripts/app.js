@@ -1,4 +1,4 @@
-var app = angular.module('firstMoxtraDemo', ['ui.router', 'ui.bootstrap']);
+var app = angular.module('firstMoxtraDemo', ['ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
   $stateProvider
