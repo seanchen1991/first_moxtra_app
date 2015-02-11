@@ -55,7 +55,7 @@
                             <strong>Professor: </strong>{{course.professor}}<br>
                             <strong>Enrolled: </strong>{{course.enrolled}}
                         </blockquote>
-                        <button class="form-group" ng-click="enroll(course)">Enroll</button>
+                        <button class="form-group" ng-disabled="course.students.indexOf(student.uniqueID) > -1" ng-click="enroll(course)">Enroll</button>
                     </li>
                 </ul>
             </div>

@@ -16,6 +16,7 @@ app.factory('courses', ['$http', 'students', function($http, students) {
   o.getAll = function() {
     return $http.get('/courses').success(function(data) {
       angular.copy(data, o.courses);
+      console.log("Courses: ", o.courses);
     });
   };
   o.incrementEnrolled = function(course) {
