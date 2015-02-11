@@ -5,6 +5,7 @@ app.factory('students', ['$http', function($http) {
   u.getStudent = function() {
     return $http.get('/login/data').success(function(data) {
       u.student = data;
+      console.log("student: ", u.student);
     });
   };
   u.enroll = function(course) {
