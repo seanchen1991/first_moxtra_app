@@ -3,7 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var request = require('request');
 var CryptoJS = require('crypto-js');
-var moxtraData = require('./../config/auth')
+var moxtraData = require('./../config/auth');
 
 var Course = mongoose.model('Course');
 var Student = mongoose.model('Student');
@@ -53,7 +53,7 @@ router.post('/courses', function(req, res, next) {
   var options = {
     method: 'post',
     json: true,
-    url: 'https://api.moxtra.com/v1/me/binders?access_token=' + student.token,
+    url: moxtraData.moxtraAuth.binderURL + student.token,
     headers: { 'content-type': 'application/json' },
     body: { 'name': course.title }
   };
@@ -132,6 +132,7 @@ router.post('/students/:id/enroll', function(req, res, next) {
       'suppress_feed': true
     }
   };
+  console.log("Course Binder ID: ", course.binderID);
   request(options, function(err, response, body) {
     console.log("Post Enroll Response body:", body);
     if (!err && response.statusCode == 200) {

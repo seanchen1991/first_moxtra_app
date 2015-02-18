@@ -10,6 +10,7 @@ module.exports = {
     'tokenURL' : 'https://api.moxtra.com/oauth/token',
     'userURL' : 'https://api.moxtra.com/me?access_token=',
     'binderURL' : 'https://api.moxtra.com/v1/me/binders?access_token='
+
   }
 
 };
