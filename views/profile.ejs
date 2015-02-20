@@ -55,8 +55,7 @@
                             <strong>Professor: </strong>{{course.professor}}<br>
                             <strong>Enrolled: </strong>{{course.enrolled}}
                         </blockquote>
-                        //<button class="form-group" ng-disabled="course.students.indexOf(student.uniqueID) > -1" ng-click="enroll(course)">{{ course.students.indexOf(student.uniqueID) > -1 ? 'Enrolled' : 'Enroll' }}</button>
-                        <button class="form-group" ng-click="enroll(course)"> Enroll</button>
+                        <button class="form-group" ng-disabled="course.students.indexOf(student.uniqueID) > -1" ng-click="enroll(course)">{{ course.students.indexOf(student.uniqueID) > -1 ? 'Enrolled' : 'Enroll' }}</button>
                     </li>
                 </ul>
             </div>
@@ -80,13 +79,6 @@
         </div>
     </div>
 </script>
-
-<!-- <script type="text/ng-template" id="chat.html">
-    <div class="modal-body">
-        <iframe src="https://www.moxtra.com/service/#api.chat/BJ9wA6SLTUZ4xcNxKyU51IK?client_id=mpzVqzEzCIo&amp;type=websdk&amp;origin=http%3A%2F%2Flocalhost%3A8000" frameborder="0" allowtransparency="true" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen="" style="width: 100%; height: 100%; border: none; background-color: transparent;">
-        </iframe>
-    </div>
-</script> -->
 
     <script src="lib/angular/angular.min.js"></script>
     <script src="lib/angular-ui-router/release/angular-ui-router.min.js"></script>

@@ -29,9 +29,9 @@ app.factory('courses', ['$http', 'students', function($http, students) {
     var options = {
       binder_id: course.binderID,
       iframe: false,
-      tagid4iframe: 'container',
-      iframewidth: '500px',
-      iframeheight: '450px',
+      // tagid4iframe: 'container',
+      // iframewidth: '500px',
+      // iframeheight: '450px',
       autostart_meet: true,
       autostart_note: false,
       start_chat: function(event) {

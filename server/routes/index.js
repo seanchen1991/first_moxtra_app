@@ -4,6 +4,7 @@ var mongoose = require('mongoose');
 var request = require('request');
 var CryptoJS = require('crypto-js');
 var moxtraData = require('./../config/auth');
+// require('request-debug');
 
 var Course = mongoose.model('Course');
 var Student = mongoose.model('Student');
@@ -61,7 +62,8 @@ router.post('/courses', function(req, res, next) {
     console.log("Post Courses Response: ", response);
     if (!err && response.statusCode == 200) {
       course.binderID = body.data.id;
-      course.owner = student.uniqueID;
+      course.owner.uniqueid = student.uniqueID;
+      course.owner.token = student.token;
       course.students.push(student.uniqueID);
       student.courses.push(course);
       student.save(function(err, student) {
@@ -83,14 +85,21 @@ router.get('/courses/:course', function(req, res) {
 
 router.put('/courses/:course/enroll', function(req, res, next) {
   var course = req.course;
-  course.incrementEnrolled(function(err, course) {
-    if (err)
-      return next(err);
-    course.students.push(req.user[0].uniqueID);
-    course.save(function(err, course) {
+  var url = 'http://localhost:8000/students/' + course.owner.uniqueid + '/access_token';
+
+  request(url, function(err, response, body) {
+    console.log("Update course access token with: ", body);
+    course.owner.token = JSON.parse(body);
+    console.log("Updated course: ", course);
+    course.incrementEnrolled(function(err, course) {
       if (err)
         return next(err);
-      res.json(course);
+      course.students.push(req.user[0].uniqueID);
+      course.save(function(err, course) {
+        if (err)
+          return next(err);
+        res.json(course);
+      });
     });
   });
 });
@@ -115,11 +124,10 @@ router.post('/students/:id/enroll', function(req, res, next) {
   var course = new Course(req.body);
   var student = req.student[0];
   console.log("Students enroll req: ", student);
-  console.log("Course: ", course);
   var options = {
     method: 'post',
     json: true,
-    url: 'https://api.moxtra.com/' + course.binderID + '/addteamuser?access_token=' + student.token,
+    url: 'https://api.moxtra.com/' + course.binderID + '/addteamuser?access_token=' + course.owner.token,
     headers: { 'content-type': 'application/json' },
     body: {
       'users': [
@@ -145,12 +153,6 @@ router.post('/students/:id/enroll', function(req, res, next) {
       });
     }
   });
-  // student.courses.push(course);
-  // student.save(function(err, student) {
-  //   if (err)
-  //     return next(err);
-  //   res.json(course);
-  // });
 });
 
 module.exports = router;
