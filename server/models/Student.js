@@ -7,6 +7,7 @@ var studentSchema = mongoose.Schema({
   email : { type: String },
   password : { type: String },
   token : { type: String },
+  orgid : { type: String },
   courses: []
 });
 

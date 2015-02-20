@@ -50,38 +50,30 @@ module.exports = function(app, passport) {
 };
 
 function isLoggedIn(req, res, next) {
+  var student = req.user[0];
+  var timestamp = new Date().getTime();
+  var hash = CryptoJS.HmacSHA256(moxtraData.moxtraAuth.clientID + student.uniqueID + timestamp, moxtraData.moxtraAuth.clientSecret);
+  var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
+  var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
+  var url = 'https://api.moxtra.com/oauth/token?client_id=' + moxtraData.moxtraAuth.clientID + 
+            '&client_secret=' + moxtraData.moxtraAuth.clientSecret +
+            '&grant_type=' + moxtraData.moxtraAuth.grantType +
+            '&uniqueid=' + student.uniqueID +
+            '&timestamp=' + timestamp +
+            '&signature=' + signature;
   if (req.isAuthenticated()) {
-    var student = req.user[0];
-    var timestamp = new Date().getTime();
-    var hash = CryptoJS.HmacSHA256(moxtraData.moxtraAuth.clientID + student.uniqueID + timestamp, moxtraData.moxtraAuth.clientSecret);
-    var hashInBase64 = CryptoJS.enc.Base64.stringify(hash);
-    var signature = hashInBase64.replace(/\+/g, '-').replace(/\//g, '_').replace(/\=+$/, '');
-    var options = {
-      method: 'post',
-      json: true,
-      url: moxtraData.moxtraAuth.tokenURL,
-      headers: { 'content-type' : 'application/json' },
-      body: { 'client_id' : moxtraData.moxtraAuth.clientID,
-              'client_secret' : moxtraData.moxtraAuth.clientSecret,
-              'grant_type' : moxtraData.moxtraAuth.grantType,
-              'uniqueid' : req.user[0].uniqueID,
-              'timestamp' : timestamp,
-              'signature' : signature
-            }
-    };
-    request(options, function(err, response, body) {
-      console.log("isLoggedIn response body: ", body);
+    request.post(url, function(err, response, body) {
       if (!err && response.statusCode == 200) {
         var parsed = JSON.parse(body);
-        student.token = parsed.access_token;
+        student.token = parsed.access_token; 
+        student.orgid =  
         student.save(function(err) {
           if (err)
-            throw err;
-          return next(null, student);
-        })
+            return next(err);
+        });
       }
     });
+    return next(null, student);
   }
   res.redirect('/');
 }
-

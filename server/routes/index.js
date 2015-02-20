@@ -55,7 +55,7 @@ router.post('/courses', function(req, res, next) {
     json: true,
     url: moxtraData.moxtraAuth.binderURL + student.token,
     headers: { 'content-type': 'application/json' },
-    body: { 'name': course.title }
+    body: { 'name' : course.title }
   };
   request(options, function(err, response, body) {
     console.log("Post Courses Response: ", response);
@@ -114,10 +114,12 @@ router.get('/students/:id/access_token', function(req, res) {
 router.post('/students/:id/enroll', function(req, res, next) {
   var course = new Course(req.body);
   var student = req.student[0];
+  console.log("Students enroll req: ", student);
+  console.log("Course: ", course);
   var options = {
     method: 'post',
     json: true,
-    url: 'https://api.moxtra.com/' + course.binderID + '/addteamuser',
+    url: 'https://api.moxtra.com/' + course.binderID + '/addteamuser?access_token=' + student.token,
     headers: { 'content-type': 'application/json' },
     body: {
       'users': [
@@ -132,7 +134,6 @@ router.post('/students/:id/enroll', function(req, res, next) {
       'suppress_feed': true
     }
   };
-  console.log("Course Binder ID: ", course.binderID);
   request(options, function(err, response, body) {
     console.log("Post Enroll Response body:", body);
     if (!err && response.statusCode == 200) {
