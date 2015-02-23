@@ -26,12 +26,12 @@ app.factory('courses', ['$http', 'students', function($http, students) {
       });
   };
   o.join = function(course) {
+    console.log("BinderID on Join: ", course.binderID);
+    console.log("Student access token: ", students.student.token);
     var options = {
+      access_token: students.student.token,
       binder_id: course.binderID,
       iframe: false,
-      // tagid4iframe: 'container',
-      // iframewidth: '500px',
-      // iframeheight: '450px',
       autostart_meet: true,
       autostart_note: false,
       start_chat: function(event) {

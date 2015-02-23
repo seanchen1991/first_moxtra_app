@@ -56,10 +56,9 @@ router.post('/courses', function(req, res, next) {
     json: true,
     url: moxtraData.moxtraAuth.binderURL + student.token,
     headers: { 'content-type': 'application/json' },
-    body: { 'name' : course.title }
+    body: { 'name' : course.title, 'conversation' : true }
   };
   request(options, function(err, response, body) {
-    console.log("Post Courses Response: ", response);
     if (!err && response.statusCode == 200) {
       course.binderID = body.data.id;
       course.owner.uniqueid = student.uniqueID;
@@ -85,7 +84,7 @@ router.get('/courses/:course', function(req, res) {
 
 router.put('/courses/:course/enroll', function(req, res, next) {
   var course = req.course;
-  var url = 'http://localhost:8000/students/' + course.owner.uniqueid + '/access_token';
+  var url = 'http://localhost:8000/students/' + req.user[0].uniqueID + '/access_token';
 
   request(url, function(err, response, body) {
     console.log("Update course access token with: ", body);
