@@ -62,10 +62,14 @@ module.exports = function(passport) {
       Student.findOne({ 'email' : email }, function(err, student) {
         if (err)
           return next(err);
-        if (student) {
+        if (student)
           return next(null, false, req.flash('signupMessage', 'That email already exists in our records.'));
+        if (req.body.password !== req.body.confirm) {
+          return next(null, false, req.flash('signupMessage', 'Passwords do not match.'));
         } else {
           var newStudent = new Student();
+          newStudent.firstname = req.body.first_name;
+          newStudent.lastname = req.body.last_name;
           newStudent.email = email;
           newStudent.password = newStudent.generateHash(password);
           newStudent.uniqueID = ShortID.generate();

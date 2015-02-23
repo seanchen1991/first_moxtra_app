@@ -37,7 +37,14 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.get('/login/data', function(req, res) {
-  res.json(req.user[0]);
+  var student = req.user[0];
+  var url = 'http://localhost:8000/students/' + student.uniqueID + '/access_token';
+  request(url, function(err, response, body) {
+    if (!err && response.statusCode == 200) {
+      student.token = JSON.parse(body);
+      res.json(student);
+    }
+  });
 });
 
 router.get('/courses', function(req, res, next) {

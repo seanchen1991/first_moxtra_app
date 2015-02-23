@@ -39,14 +39,6 @@ module.exports = function(app, passport) {
     failureRedirect : '/login',
     failureFlash : true
   }));
-
-  // app.get('/auth/moxtra', passport.authenticate('moxtra'));
-
-  // app.get('/auth/moxtra/callback', passport.authenticate('moxtra', {
-  //   successRedirect : '/profile',
-  //   failureRedirect : '/',
-  //   failureFlash : true
-  // }));
 };
 
 function isLoggedIn(req, res, next) {
@@ -60,7 +52,9 @@ function isLoggedIn(req, res, next) {
             '&grant_type=' + moxtraData.moxtraAuth.grantType +
             '&uniqueid=' + student.uniqueID +
             '&timestamp=' + timestamp +
-            '&signature=' + signature;
+            '&signature=' + signature + 
+            '&firstname=' + student.firstname +
+            '&lastname=' + student.lastname;
   if (req.isAuthenticated()) {
     request.post(url, function(err, response, body) {
       if (!err && response.statusCode == 200) {
