@@ -55,7 +55,7 @@
                             <strong>Professor: </strong>{{course.professor}}<br>
                             <strong>Enrolled: </strong>{{course.enrolled}}
                         </blockquote>
-                        <button class="form-group" ng-disabled="course.students.indexOf(student.uniqueID) > -1" ng-click="enroll(course)">{{ course.students.indexOf(student.uniqueID) > -1 ? 'Enrolled' : 'Enroll' }}</button>
+                        <button class="form-group" click-and-disable ng-disabled="{{course.students.indexOf(student.uniqueID) > -1}}" ng-click="enroll(course)">{{ course.students.indexOf(student.uniqueID) > -1 ? 'Enrolled' : 'Enroll' }}</button>
                     </li>
                 </ul>
             </div>
@@ -71,8 +71,7 @@
                             <strong>Course Description: </strong>{{course.description}}<br>
                             <strong>Professor: </strong>{{course.professor}}
                         </blockquote>
-
-                        <button class="form-group" ng-click="join(course)">Join Course</button>
+                        <button class="form-group" ng-click="joinDiscussion(course)">Join Discussion</button>
                     </li>
                 </ul>
             </div>
@@ -91,6 +90,7 @@
     <script src="javascripts/controllers/chat.js"></script>
     <script src="javascripts/services/students.js"></script>
     <script src="javascripts/services/courses.js"></script>
+    <script src="javascripts/directives/click.js"></script>
 
 </body>
 

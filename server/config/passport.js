@@ -17,41 +17,6 @@ module.exports = function(passport) {
     });
   });
 
-  // passport.use('moxtra', new OAuthStrategy({
-  //   authorizationURL: configAuth.moxtraAuth.authorizationURL,
-  //   tokenURL: configAuth.moxtraAuth.tokenURL,
-  //   clientID: configAuth.moxtraAuth.clientID,
-  //   clientSecret: configAuth.moxtraAuth.clientSecret,
-  //   callbackURL: configAuth.moxtraAuth.callbackURL
-  // },
-  // function(accessToken, refreshToken, profile, done) {
-  //   request.get(configAuth.moxtraAuth.userURL + accessToken, function(err, response, body) {
-  //     if (!err && response.statusCode == 200) {
-  //       var parsed = JSON.parse(body);
-  //       Student.findOne({ 'uniqueID' : parsed.data.id }, function(err, student) {
-  //         if (err)
-  //           return done(err)
-  //         if (student) {
-  //           return done(null, student);
-  //         } else {
-  //           var newStudent = new Student();
-  //           newStudent.name = parsed.data.name;
-  //           newStudent.uniqueID = parsed.data.id;
-  //           newStudent.email = parsed.data.email;
-  //           newStudent.token = accessToken;
-  //           newStudent.save(function(err) {
-  //             if (err)
-  //               throw err;
-  //             return done(null, newStudent);
-  //           });
-  //         }
-  //       });
-  //     } else {
-  //       console.error(err);
-  //     }
-  //   });
-  // }));
-
   passport.use('local-signup', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password',

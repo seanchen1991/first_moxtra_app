@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var request = require('request');
 var CryptoJS = require('crypto-js');
 var moxtraData = require('./../config/auth');
-// require('request-debug');
 
 var Course = mongoose.model('Course');
 var Student = mongoose.model('Student');
@@ -38,9 +37,11 @@ router.param('id', function(req, res, next, id) {
 
 router.get('/login/data', function(req, res) {
   var student = req.user[0];
+  console.log('/login/data student: ', student);
   var url = 'http://localhost:8000/students/' + student.uniqueID + '/access_token';
   request(url, function(err, response, body) {
     if (!err && response.statusCode == 200) {
+      console.log('/login/data body: ', body);
       student.token = JSON.parse(body);
       res.json(student);
     }
