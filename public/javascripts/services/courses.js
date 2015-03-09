@@ -25,7 +25,7 @@ app.factory('courses', ['$http', 'students', function($http, students) {
         course.enrolled++;
       });
   };
-  o.joinDiscussion = function(course) {
+  o.join = function(course) {
     var options = {
       access_token: students.student.token,
       binder_id: course.binderID,

@@ -59,6 +59,7 @@ function isLoggedIn(req, res, next) {
     request.post(url, function(err, response, body) {
       if (!err && response.statusCode == 200) {
         var parsed = JSON.parse(body);
+        console.log("isLoggedIn parsed body: ", parsed);
         student.token = parsed.access_token;  
         student.save(function(err) {
           if (err)
