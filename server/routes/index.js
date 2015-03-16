@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var request = require('request');
-var CryptoJS = require('crypto-js');
 var moxtraData = require('./../config/auth');
 
 var Course = mongoose.model('Course');
